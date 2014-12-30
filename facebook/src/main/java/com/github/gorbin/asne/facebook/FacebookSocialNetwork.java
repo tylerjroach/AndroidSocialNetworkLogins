@@ -354,6 +354,21 @@ public class FacebookSocialNetwork extends SocialNetwork {
         performPublish(PendingAction.POST_STATUS_UPDATE);
     }
 
+
+    public boolean postAllowed() {
+        Session session = Session.getActiveSession();
+        if (session != null) {
+
+            if (session.isPermissionGranted(PERMISSION)) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return true;
+        }
+    }
+
     /**
      * Post photo with comment to social network
      * @param photo photo that should be shared
