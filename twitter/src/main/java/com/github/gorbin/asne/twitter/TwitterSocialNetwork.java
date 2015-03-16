@@ -378,7 +378,7 @@ public class TwitterSocialNetwork extends OAuthSocialNetwork {
     @Override
     public void requestGetFriends(OnRequestGetFriendsCompleteListener onRequestGetFriendsCompleteListener) {
         super.requestGetFriends(onRequestGetFriendsCompleteListener);
-        executeRequest(new RequestGetFriendsAsyncTask(), null, REQUEST_GET_FRIENDS);
+        executeRequest(new RequestGetFriendIdsAsyncTask(), null, REQUEST_GET_FRIENDS);
     }
 
     /**
@@ -789,6 +789,47 @@ public class TwitterSocialNetwork extends OAuthSocialNetwork {
                     .OnGetFriendsComplete(getID(), socialPersons);
         }
     }
+
+    private class RequestGetFriendIdsAsyncTask extends SocialNetworkAsyncTask {
+        public static final String RESULT_GET_FRIENDS_ID = "RESULT_GET_FRIENDS_ID";
+
+        @Override
+        protected Bundle doInBackground(Bundle... params) {
+            Bundle result = new Bundle();
+            ArrayList<String> friendIds = new ArrayList<String>();
+            try {
+                PagableResponseList<User> friends;// = new PagableResponseList<User>();
+                long cursor = -1;
+                long userID = mSharedPreferences.getLong(SAVE_STATE_KEY_USER_ID, -1);
+
+                do {
+                    friends = mTwitter.getFriendsList(userID, cursor, 5000);
+                    for (User user : friends) {
+                        friendIds.add(String.valueOf(user.getId()));
+                    }
+                } while ((cursor = friends.getNextCursor()) != 0);
+                result.putStringArray(RESULT_GET_FRIENDS_ID, friendIds.toArray(new String[friendIds.size()]));
+            } catch (TwitterException e) {
+
+                if (friendIds.size() > 0) {
+                    result.putStringArray(RESULT_GET_FRIENDS_ID, friendIds.toArray(new String[friendIds.size()]));
+                } else {
+                    result.putString(RESULT_ERROR, e.getMessage());
+                }
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(Bundle result) {
+            if (!handleRequestResult(result, REQUEST_GET_FRIENDS,
+                    result.getStringArray(RESULT_GET_FRIENDS_ID))) return;
+
+            ((OnRequestGetFriendsCompleteListener) mLocalListeners.get(REQUEST_GET_FRIENDS))
+                    .OnGetFriendsIdComplete(getID(), result.getStringArray(RESULT_GET_FRIENDS_ID));
+        }
+    }
+
 
     private class RequestCheckIsFriendAsyncTask extends SocialNetworkAsyncTask {
         public static final String PARAM_USER_ID = "PARAM_USER_ID";
