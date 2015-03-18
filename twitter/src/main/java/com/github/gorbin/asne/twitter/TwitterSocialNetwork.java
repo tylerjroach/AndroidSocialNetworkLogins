@@ -21,6 +21,7 @@
  *******************************************************************************/
 package com.github.gorbin.asne.twitter;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -82,8 +83,8 @@ public class TwitterSocialNetwork extends OAuthSocialNetwork {
     private Twitter mTwitter;
     private RequestToken mRequestToken;
 
-    public TwitterSocialNetwork(Fragment fragment, String consumerKey, String consumerSecret, String redirectURL) {
-        super(fragment);
+    public TwitterSocialNetwork(Fragment fragment, Context ctx, String consumerKey, String consumerSecret, String redirectURL) {
+        super(fragment, ctx);
 
         fConsumerKey = consumerKey;
         fConsumerSecret = consumerSecret;

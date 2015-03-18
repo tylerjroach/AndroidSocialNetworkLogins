@@ -95,8 +95,8 @@ public class FacebookSocialNetwork extends SocialNetwork {
 
     private ActionBarActivity activity;
 
-    public FacebookSocialNetwork(Fragment fragment, ArrayList<String> permissions) {
-        super(fragment);
+    public FacebookSocialNetwork(Fragment fragment, Context ctx, ArrayList<String> permissions) {
+        super(fragment, ctx);
         String applicationID = Utility.getMetadataApplicationId(fragment.getActivity());
 
         if (applicationID == null) {

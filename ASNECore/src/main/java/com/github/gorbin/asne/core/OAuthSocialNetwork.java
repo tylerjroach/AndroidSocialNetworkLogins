@@ -21,6 +21,7 @@
  *******************************************************************************/
 package com.github.gorbin.asne.core;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
@@ -39,8 +40,8 @@ public abstract class OAuthSocialNetwork extends SocialNetwork {
 
     protected Map<String, SocialNetworkAsyncTask> mRequests = new HashMap<String, SocialNetworkAsyncTask>();
 
-    protected OAuthSocialNetwork(Fragment fragment) {
-        super(fragment);
+    protected OAuthSocialNetwork(Fragment fragment, Context ctx) {
+        super(fragment, ctx);
     }
 
     protected void executeRequest(SocialNetworkAsyncTask request, Bundle params, String requestID) {

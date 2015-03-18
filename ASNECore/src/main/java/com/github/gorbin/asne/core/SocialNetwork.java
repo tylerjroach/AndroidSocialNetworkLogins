@@ -124,9 +124,9 @@ public abstract class SocialNetwork {
      *                 we will want to receice on onActivityResult in out SocialNetworkManager
      *                 fragment
      */
-    protected SocialNetwork(Fragment fragment) {
+    protected SocialNetwork(Fragment fragment, Context ctx) {
         mSocialNetworkManager = fragment;
-        mSharedPreferences = mSocialNetworkManager.getActivity().getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+        mSharedPreferences = ctx.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
     }
 
     //////////////////// LIFECYCLE ////////////////////

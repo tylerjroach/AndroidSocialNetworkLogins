@@ -22,6 +22,7 @@
 package com.github.gorbin.asne.googleplus;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -98,8 +99,8 @@ public class GooglePlusSocialNetwork extends SocialNetwork implements GooglePlay
     private boolean mConnectRequested;
     private Handler mHandler = new Handler();
 
-    public GooglePlusSocialNetwork(Fragment fragment) {
-        super(fragment);
+    public GooglePlusSocialNetwork(Fragment fragment, Context ctx) {
+        super(fragment, ctx);
     }
 
     /**
