@@ -21,11 +21,12 @@
  *******************************************************************************/
 package com.github.gorbin.asne.twitter;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 
 import com.github.gorbin.asne.core.OAuthActivity;
@@ -82,10 +83,11 @@ public class TwitterSocialNetwork extends OAuthSocialNetwork {
     private String fRedirectURL;
     private Twitter mTwitter;
     private RequestToken mRequestToken;
+    private ActionBarActivity ctx;
 
-    public TwitterSocialNetwork(Fragment fragment, Context ctx, String consumerKey, String consumerSecret, String redirectURL) {
+    public TwitterSocialNetwork(Fragment fragment, ActionBarActivity ctx, String consumerKey, String consumerSecret, String redirectURL) {
         super(fragment, ctx);
-
+        this.ctx = ctx;
         fConsumerKey = consumerKey;
         fConsumerSecret = consumerSecret;
         fRedirectURL = redirectURL;
@@ -488,11 +490,11 @@ public class TwitterSocialNetwork extends OAuthSocialNetwork {
             if (!handleRequestResult(result, REQUEST_LOGIN)) return;
 
             if (result.containsKey(RESULT_OAUTH_LOGIN)) {
-                Intent intent = new Intent(mSocialNetworkManager.getActivity(), OAuthActivity.class)
+                Intent intent = new Intent(ctx, OAuthActivity.class)
                         .putExtra(OAuthActivity.PARAM_CALLBACK, fRedirectURL)
                         .putExtra(OAuthActivity.PARAM_URL_TO_LOAD, result.getString(RESULT_OAUTH_LOGIN));
 
-                mSocialNetworkManager.getActivity().startActivityForResult(intent, REQUEST_AUTH);
+                ((Activity)ctx).startActivityForResult(intent, REQUEST_AUTH);
             }
         }
     }
