@@ -524,6 +524,15 @@ public class FacebookSocialNetwork extends SocialNetwork {
         Request request = Request.newMyFriendsRequest(currentSession, new Request.GraphUserListCallback() {
             @Override
             public void onCompleted(List<GraphUser> users, Response response) {
+
+                if (users == null) {
+                    if (mLocalListeners.get(REQUEST_GET_FRIENDS) != null) {
+                        mLocalListeners.get(REQUEST_GET_FRIENDS).onError(getID(),
+                                REQUEST_GET_FRIENDS, "Error loading friends", null);
+                    }
+                    return;
+                }
+
                 String[] ids = new String[users.size()];
                 ArrayList<SocialPerson> socialPersons = new ArrayList<SocialPerson>();
                 SocialPerson socialPerson = new SocialPerson();
