@@ -28,7 +28,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.facebook.FacebookAuthorizationException;
@@ -92,9 +92,9 @@ public class FacebookSocialNetwork extends SocialNetwork {
         }
     };
 
-    private ActionBarActivity ctx;
+    private AppCompatActivity ctx;
 
-    public FacebookSocialNetwork(Fragment fragment, ActionBarActivity ctx, ArrayList<String> permissions) {
+    public FacebookSocialNetwork(Fragment fragment, AppCompatActivity ctx, ArrayList<String> permissions) {
         super(fragment, ctx);
         String applicationID = Utility.getMetadataApplicationId(ctx);
 
@@ -819,6 +819,6 @@ public class FacebookSocialNetwork extends SocialNetwork {
 
     @Override
     public void onAttach(Activity a) {
-        ctx = (ActionBarActivity) a;
+        ctx = (AppCompatActivity) a;
     }
 }

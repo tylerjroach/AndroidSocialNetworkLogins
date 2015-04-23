@@ -28,7 +28,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.github.gorbin.asne.core.listener.OnCheckIsFriendCompleteListener;
@@ -125,7 +125,7 @@ public abstract class SocialNetwork {
      *                 we will want to receice on onActivityResult in out SocialNetworkManager
      *                 fragment
      */
-    protected SocialNetwork(Fragment fragment, ActionBarActivity ctx) {
+    protected SocialNetwork(Fragment fragment, AppCompatActivity ctx) {
         mSocialNetworkManager = fragment;
         mSharedPreferences = ctx.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
     }

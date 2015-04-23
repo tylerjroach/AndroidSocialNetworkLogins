@@ -26,7 +26,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 
 import com.github.gorbin.asne.core.OAuthActivity;
@@ -83,9 +83,9 @@ public class TwitterSocialNetwork extends OAuthSocialNetwork {
     private String fRedirectURL;
     private Twitter mTwitter;
     private RequestToken mRequestToken;
-    private ActionBarActivity ctx;
+    private AppCompatActivity ctx;
 
-    public TwitterSocialNetwork(Fragment fragment, ActionBarActivity ctx, String consumerKey, String consumerSecret, String redirectURL) {
+    public TwitterSocialNetwork(Fragment fragment, AppCompatActivity ctx, String consumerKey, String consumerSecret, String redirectURL) {
         super(fragment, ctx);
         this.ctx = ctx;
         fConsumerKey = consumerKey;
