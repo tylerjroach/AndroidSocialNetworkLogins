@@ -25,7 +25,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,7 +45,7 @@ public class SocialNetworkManager extends Fragment {
 
     private Map<Integer, SocialNetwork> mSocialNetworksMap = new HashMap<Integer, SocialNetwork>();
     private OnInitializationCompleteListener mOnInitializationCompleteListener;
-    private ActionBarActivity ABA;
+    private AppCompatActivity ABA;
 
     /**
      * Called when the Social Network activity is starting. Overrided in chosen social network
@@ -115,7 +115,7 @@ public class SocialNetworkManager extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        ABA = (ActionBarActivity) activity;
+        ABA = (AppCompatActivity) activity;
     }
 
     /**
