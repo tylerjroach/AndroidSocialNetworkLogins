@@ -29,6 +29,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.github.gorbin.asne.core.AccessToken;
 import com.github.gorbin.asne.core.SocialNetwork;
@@ -127,7 +128,16 @@ public class GooglePlusSocialNetwork extends SocialNetwork implements GoogleApiC
             mConnectionResult.startResolutionForResult(mActivity, REQUEST_AUTH);
         } catch (Exception e) {
             if (!googleApiClient.isConnecting()) {
-                googleApiClient.connect();
+                //  Looks like we're already connected, so nothing to do.
+                if(googleApiClient.isConnected()){
+                    onConnected(null);
+                }
+                else{
+                    googleApiClient.connect();
+                }
+            }
+            else{
+                Log.e(getClass().toString(), "Already connecting");
             }
         }
     }
@@ -629,9 +639,15 @@ public class GooglePlusSocialNetwork extends SocialNetwork implements GoogleApiC
         super.onActivityResult(requestCode, resultCode, data);
         int sanitizedRequestCode = requestCode % 0x10000;
         if (sanitizedRequestCode == REQUEST_AUTH) {
-            if (resultCode == Activity.RESULT_OK && !googleApiClient.isConnected() && !googleApiClient.isConnecting()) {
-                // This time, connect should succeed.
-                googleApiClient.connect();
+            if (resultCode == Activity.RESULT_OK && !googleApiClient.isConnecting()) {
+                if(googleApiClient.isConnected()){
+                    mSharedPreferences.edit().putBoolean(SAVE_STATE_KEY_IS_CONNECTED, true).commit();
+                    ((OnLoginCompleteListener) mLocalListeners.get(REQUEST_LOGIN)).onLoginSuccess(getID());
+                }
+                else{
+                    // This time, connect should succeed.
+                    googleApiClient.connect();
+                }
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 if (mLocalListeners.get(REQUEST_LOGIN) != null) {
                     mLocalListeners.get(REQUEST_LOGIN).onError(getID(), REQUEST_LOGIN,
