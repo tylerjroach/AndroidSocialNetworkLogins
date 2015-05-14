@@ -23,6 +23,7 @@ package com.github.gorbin.asne.googleplus;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -148,9 +149,8 @@ public class GooglePlusSocialNetwork extends SocialNetwork implements GoogleApiC
     @Override
     public void logout() {
         mConnectRequested = false;
-
+        mSharedPreferences.edit().remove(SAVE_STATE_KEY_IS_CONNECTED).commit();
         if (googleApiClient.isConnected()) {
-            mSharedPreferences.edit().remove(SAVE_STATE_KEY_IS_CONNECTED).commit();
             Plus.AccountApi.clearDefaultAccount(googleApiClient);
             googleApiClient.disconnect();
             googleApiClient.connect();
@@ -700,6 +700,12 @@ public class GooglePlusSocialNetwork extends SocialNetwork implements GoogleApiC
         if (mConnectRequested && mLocalListeners.get(REQUEST_LOGIN) != null) {
             mLocalListeners.get(REQUEST_LOGIN).onError(getID(), REQUEST_LOGIN,
                     "error: " + connectionResult.getErrorCode(), null);
+        } else if(mConnectRequested){
+            try {
+                mConnectionResult.startResolutionForResult(mActivity, REQUEST_AUTH);
+            } catch (IntentSender.SendIntentException e) {
+                Log.e(getClass().toString(), "Cannot start resolution for result.", e);
+            }
         }
 
         mConnectRequested = false;
